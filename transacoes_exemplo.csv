@@ -1,0 +1,191 @@
+Data,Valor,Identificador,Descrição,Categoria
+01/06/2025,4288.99,Sal_1,Depósito de salário empresa XPTO,Salário
+02/06/2025,1747.96,Sal_2,Pagamento mensal CLT,Salário
+03/06/2025,69.6,Sal_3,Salário recebido via transferência,Salário
+04/06/2025,-395.85,Sal_4,Crédito de salário,Salário
+05/06/2025,767.87,Sal_5,Transferência de salário,Salário
+06/06/2025,3581.0,Sal_6,Salário empresa ABC,Salário
+07/06/2025,1296.32,Sal_7,Pagamento referente ao mês,Salário
+08/06/2025,1737.19,Sal_8,Recebimento de salário,Salário
+09/06/2025,1284.83,Sal_9,Salário depositado,Salário
+10/06/2025,4185.7,Sal_10,Pagamento de salário,Salário
+01/06/2025,1686.2,Fre_1,Pagamento de projeto freelance,Freelance
+02/06/2025,1032.2,Fre_2,Recebimento de serviço autônomo,Freelance
+03/06/2025,1389.9,Fre_3,Freelance: desenvolvimento de site,Freelance
+04/06/2025,3147.54,Fre_4,Freelance design gráfico,Freelance
+05/06/2025,4960.99,Fre_5,Pagamento por consultoria freelance,Freelance
+06/06/2025,253.16,Fre_6,Recebimento de trabalho freelancer,Freelance
+07/06/2025,2580.13,Fre_7,Freelancer em programação,Freelance
+08/06/2025,1893.86,Fre_8,Freelancer em design,Freelance
+09/06/2025,4995.91,Fre_9,Freelancer em tradução,Freelance
+10/06/2025,3243.54,Fre_10,Freelancer em marketing,Freelance
+01/06/2025,2600.94,Inv_1,Rendimento de investimentos,Investimentos
+02/06/2025,3870.04,Inv_2,Lucro de ações B3,Investimentos
+03/06/2025,2350.78,Inv_3,Dividendos recebidos,Investimentos
+04/06/2025,1047.08,Inv_4,Aplicação em fundos,Investimentos
+05/06/2025,807.74,Inv_5,Compra de ações,Investimentos
+06/06/2025,4423.91,Inv_6,Rendimento CDB,Investimentos
+07/06/2025,3707.05,Inv_7,Investimento em renda fixa,Investimentos
+08/06/2025,2205.79,Inv_8,Investimento em Tesouro Direto,Investimentos
+09/06/2025,2992.71,Inv_9,Compra de criptomoedas,Investimentos
+10/06/2025,4333.52,Inv_10,Venda de ações,Investimentos
+01/06/2025,4556.42,Str_1,Assinatura Netflix,Streaming
+02/06/2025,3169.71,Str_2,Pagamento Netflix mensal,Streaming
+03/06/2025,-66.18,Str_3,Cobrança Netflix,Streaming
+04/06/2025,22.0,Str_4,Assinatura Disney+,Streaming
+05/06/2025,4687.09,Str_5,Pagamento Globoplay,Streaming
+06/06/2025,-18.07,Str_6,Assinatura Amazon Prime Video,Streaming
+07/06/2025,656.36,Str_7,Pagamento Prime Video,Streaming
+08/06/2025,3273.8,Str_8,Assinatura HBO Max,Streaming
+09/06/2025,235.84,Str_9,Pagamento Telecine,Streaming
+10/06/2025,604.38,Str_10,Assinatura Spotify,Streaming
+01/06/2025,3533.11,Int_1,Internet Vivo Fibra,Internet
+02/06/2025,3734.65,Int_2,Assinatura NET Virtua,Internet
+03/06/2025,-419.85,Int_3,Internet Claro mensal,Internet
+04/06/2025,491.81,Int_4,Pagamento de internet banda larga,Internet
+05/06/2025,2700.3,Int_5,Fatura internet Oi,Internet
+06/06/2025,3147.32,Int_6,Internet TIM Live,Internet
+07/06/2025,3421.47,Int_7,Pagamento de internet GVT,Internet
+08/06/2025,977.45,Int_8,Assinatura internet móvel,Internet
+09/06/2025,2598.97,Int_9,Internet residencial,Internet
+10/06/2025,3204.97,Int_10,Internet empresarial,Internet
+01/06/2025,2882.41,Com_1,Comissão de vendas,Comissões
+02/06/2025,4823.74,Com_2,Bônus por meta batida,Comissões
+03/06/2025,4140.02,Com_3,Comissão recebida,Comissões
+04/06/2025,678.06,Com_4,Comissão extra,Comissões
+05/06/2025,3339.69,Com_5,Pagamento de comissão,Comissões
+06/06/2025,84.67,Com_6,Comissão sobre vendas,Comissões
+07/06/2025,3333.37,Com_7,Comissão de corretagem,Comissões
+08/06/2025,4574.29,Com_8,Comissão de afiliado,Comissões
+09/06/2025,4692.65,Com_9,Comissão de indicação,Comissões
+10/06/2025,-282.65,Com_10,Comissão de parceria,Comissões
+01/06/2025,1218.33,Sup_1,Compra no supermercado Carrefour,Supermercado
+02/06/2025,1729.67,Sup_2,Supermercado Extra compra do mês,Supermercado
+03/06/2025,4951.25,Sup_3,Mercado Pão de Açúcar,Supermercado
+04/06/2025,3250.68,Sup_4,Compra no supermercado,Supermercado
+05/06/2025,4106.06,Sup_5,Mercado local,Supermercado
+06/06/2025,95.09,Sup_6,Compra no supermercado Dia,Supermercado
+07/06/2025,2474.94,Sup_7,Compra no supermercado Assaí,Supermercado
+08/06/2025,854.31,Sup_8,Compra no supermercado Atacadão,Supermercado
+09/06/2025,1608.08,Sup_9,Compra no supermercado Walmart,Supermercado
+10/06/2025,2060.63,Sup_10,Compra no supermercado Bompreço,Supermercado
+01/06/2025,3759.84,Com_1,Abastecimento no posto Shell,Combustível
+02/06/2025,-368.01,Com_2,Gasolina Posto Ipiranga,Combustível
+03/06/2025,1833.66,Com_3,Etanol Posto BR,Combustível
+04/06/2025,4931.31,Com_4,Abastecimento de carro,Combustível
+05/06/2025,4781.78,Com_5,Posto de combustível,Combustível
+06/06/2025,2297.79,Com_6,Abastecimento Posto Petrobras,Combustível
+07/06/2025,4073.58,Com_7,Abastecimento Posto Ale,Combustível
+08/06/2025,2546.98,Com_8,Abastecimento Posto Texaco,Combustível
+09/06/2025,2819.71,Com_9,Abastecimento Posto Esso,Combustível
+10/06/2025,-82.82,Com_10,Abastecimento Posto BR Mania,Combustível
+01/06/2025,2826.7,Águ_1,Conta de água Cagece,Água
+02/06/2025,1659.76,Águ_2,Água SAAE,Água
+03/06/2025,3512.93,Águ_3,Pagamento de água,Água
+04/06/2025,-79.91,Águ_4,Fatura de água,Água
+05/06/2025,4403.36,Águ_5,Conta de água mensal,Água
+06/06/2025,1656.56,Águ_6,Pagamento água Sanepar,Água
+07/06/2025,2592.22,Águ_7,Pagamento água Sabesp,Água
+08/06/2025,3025.68,Águ_8,Pagamento água Copasa,Água
+09/06/2025,1102.18,Águ_9,Pagamento água Embasa,Água
+10/06/2025,2132.13,Águ_10,Pagamento água Caern,Água
+01/06/2025,4334.33,Liv_1,Compra de livros Amazon,Livros
+02/06/2025,3338.23,Liv_2,Livraria Saraiva,Livros
+03/06/2025,3079.16,Liv_3,Livro comprado na Amazon,Livros
+04/06/2025,412.08,Liv_4,Compra de livro didático,Livros
+05/06/2025,1458.61,Liv_5,Aquisição de livros,Livros
+06/06/2025,3018.72,Liv_6,Compra de livros usados,Livros
+07/06/2025,2775.99,Liv_7,Compra de livros digitais,Livros
+08/06/2025,2027.48,Liv_8,Compra de livros escolares,Livros
+09/06/2025,4960.76,Liv_9,Compra de livros técnicos,Livros
+10/06/2025,2023.45,Liv_10,Compra de livros literatura,Livros
+01/06/2025,2949.27,Rou_1,Compra de roupas Renner,Roupas
+02/06/2025,3870.24,Rou_2,Loja C&A roupas,Roupas
+03/06/2025,3512.37,Rou_3,Roupas Zara,Roupas
+04/06/2025,-84.87,Rou_4,Compra de vestuário,Roupas
+05/06/2025,-419.51,Rou_5,Aquisição de roupas,Roupas
+06/06/2025,4187.6,Rou_6,Compra de roupas Hering,Roupas
+07/06/2025,3614.64,Rou_7,Compra de roupas Riachuelo,Roupas
+08/06/2025,3082.71,Rou_8,Compra de roupas Marisa,Roupas
+09/06/2025,4214.6,Rou_9,Compra de roupas Forever 21,Roupas
+10/06/2025,4505.75,Rou_10,Compra de roupas Levis,Roupas
+01/06/2025,2540.29,Car_1,Cartão de crédito Nubank,Cartão de Crédito
+02/06/2025,2304.91,Car_2,Fatura cartão Itaú,Cartão de Crédito
+03/06/2025,3279.15,Car_3,Pagamento cartão Santander,Cartão de Crédito
+04/06/2025,3728.43,Car_4,Fatura cartão de crédito,Cartão de Crédito
+05/06/2025,3713.17,Car_5,Pagamento de cartão,Cartão de Crédito
+06/06/2025,2080.83,Car_6,Fatura cartão Bradesco,Cartão de Crédito
+07/06/2025,3910.55,Car_7,Pagamento cartão Caixa,Cartão de Crédito
+08/06/2025,3561.26,Car_8,Fatura cartão Banco do Brasil,Cartão de Crédito
+09/06/2025,1893.14,Car_9,Pagamento cartão Inter,Cartão de Crédito
+10/06/2025,2359.25,Car_10,Fatura cartão Credicard,Cartão de Crédito
+01/06/2025,3897.77,Pla_1,Plano de saúde Unimed,Plano de Saúde
+02/06/2025,1317.26,Pla_2,Plano de saúde Hapvida,Plano de Saúde
+03/06/2025,4694.86,Pla_3,Plano de saúde Bradesco,Plano de Saúde
+04/06/2025,2867.63,Pla_4,Pagamento plano de saúde,Plano de Saúde
+05/06/2025,460.75,Pla_5,Fatura plano de saúde,Plano de Saúde
+06/06/2025,3818.66,Pla_6,Plano de saúde Amil,Plano de Saúde
+07/06/2025,4690.5,Pla_7,Plano de saúde SulAmérica,Plano de Saúde
+08/06/2025,-175.77,Pla_8,Plano de saúde NotreDame,Plano de Saúde
+09/06/2025,4603.61,Pla_9,Plano de saúde Prevent Senior,Plano de Saúde
+10/06/2025,-278.3,Pla_10,Plano de saúde Porto Seguro,Plano de Saúde
+01/06/2025,582.99,Cin_1,Cinema Iguatemi,Cinema
+02/06/2025,506.7,Cin_2,Cinema UCI,Cinema
+03/06/2025,-104.02,Cin_3,Sessão de cinema Cinépolis,Cinema
+04/06/2025,151.88,Cin_4,Cinema Centerplex,Cinema
+05/06/2025,4593.55,Cin_5,Cinema Cinemark,Cinema
+06/06/2025,1604.56,Cin_6,Cinema Moviecom,Cinema
+07/06/2025,4256.21,Cin_7,Cinema Kinoplex,Cinema
+08/06/2025,3911.46,Cin_8,Cinema PlayArte,Cinema
+09/06/2025,1057.03,Cin_9,Cinema Cinesystem,Cinema
+10/06/2025,4312.29,Cin_10,Cinema Lumière,Cinema
+01/06/2025,3401.48,Alu_1,Recebimento de aluguel,Aluguel Recebido
+02/06/2025,-116.19,Alu_2,Aluguel apartamento centro,Aluguel Recebido
+03/06/2025,2414.02,Alu_3,Aluguel quitinete pago,Aluguel Recebido
+04/06/2025,4034.87,Alu_4,Recebimento aluguel comercial,Aluguel Recebido
+05/06/2025,27.92,Alu_5,Recebimento aluguel residencial,Aluguel Recebido
+06/06/2025,1549.44,Alu_6,Recebimento aluguel temporada,Aluguel Recebido
+07/06/2025,1393.35,Alu_7,Recebimento aluguel loja,Aluguel Recebido
+08/06/2025,14.45,Alu_8,Recebimento aluguel casa,Aluguel Recebido
+09/06/2025,1948.47,Alu_9,Recebimento aluguel sítio,Aluguel Recebido
+10/06/2025,3896.49,Alu_10,Recebimento aluguel galpão,Aluguel Recebido
+01/06/2025,1227.82,Doa_1,Doação para ONG Amigos,Doações
+02/06/2025,3565.17,Doa_2,Doação igreja,Doações
+03/06/2025,2604.55,Doa_3,Doação para abrigo de animais,Doações
+04/06/2025,4609.23,Doa_4,Doação para hospital,Doações
+05/06/2025,1214.6,Doa_5,Doação para campanha,Doações
+06/06/2025,1988.74,Doa_6,Doação para instituição,Doações
+07/06/2025,1137.51,Doa_7,Doação para escola,Doações
+08/06/2025,1384.95,Doa_8,Doação para associação,Doações
+09/06/2025,2670.72,Doa_9,Doação para projeto social,Doações
+10/06/2025,4734.26,Doa_10,Doação para pesquisa,Doações
+01/06/2025,4777.53,Ass_1,Assinatura Spotify,Assinaturas
+02/06/2025,2735.94,Ass_2,Assinatura Deezer,Assinaturas
+03/06/2025,51.59,Ass_3,Assinatura Apple Music,Assinaturas
+04/06/2025,222.2,Ass_4,Assinatura Google One,Assinaturas
+05/06/2025,-65.6,Ass_5,Assinatura Dropbox,Assinaturas
+06/06/2025,2584.79,Ass_6,Assinatura Office 365,Assinaturas
+07/06/2025,2836.72,Ass_7,Assinatura Adobe,Assinaturas
+08/06/2025,4915.07,Ass_8,Assinatura Coursera,Assinaturas
+09/06/2025,1777.27,Ass_9,Assinatura Alura,Assinaturas
+10/06/2025,998.18,Ass_10,Assinatura GloboPlay,Assinaturas
+01/06/2025,3554.98,Tra_1,Transferência enviada para João,Transferências
+02/06/2025,2395.83,Tra_2,Transferência recebida de Maria,Transferências
+03/06/2025,1247.09,Tra_3,Pix enviado para Pedro,Transferências
+04/06/2025,611.13,Tra_4,Pix recebido de Ana,Transferências
+05/06/2025,4763.96,Tra_5,Transferência bancária para Carlos,Transferências
+06/06/2025,4583.37,Tra_6,Transferência bancária recebida de Lucas,Transferências
+07/06/2025,88.56,Tra_7,Pix enviado para empresa,Transferências
+08/06/2025,610.81,Tra_8,Pix recebido de cliente,Transferências
+09/06/2025,81.49,Tra_9,Transferência DOC para Paulo,Transferências
+10/06/2025,2821.77,Tra_10,Transferência TED recebida de Fernanda,Transferências
+01/06/2025,4444.09,Ene_1,Pagamento de energia elétrica Enel,Energia Elétrica
+02/06/2025,3515.91,Ene_2,Conta de luz Enel,Energia Elétrica
+03/06/2025,-484.15,Ene_3,Energia elétrica pago,Energia Elétrica
+04/06/2025,1412.31,Ene_4,Fatura energia elétrica,Energia Elétrica
+05/06/2025,1940.92,Ene_5,Pagamento energia elétrica Coelce,Energia Elétrica
+06/06/2025,231.44,Ene_6,Pagamento energia elétrica Cemig,Energia Elétrica
+07/06/2025,3656.64,Ene_7,Pagamento energia elétrica Eletropaulo,Energia Elétrica
+08/06/2025,3821.62,Ene_8,Pagamento energia elétrica Light,Energia Elétrica
+09/06/2025,2209.95,Ene_9,Pagamento energia elétrica Celpe,Energia Elétrica
+10/06/2025,1751.35,Ene_10,Pagamento energia elétrica Copel,Energia Elétrica
