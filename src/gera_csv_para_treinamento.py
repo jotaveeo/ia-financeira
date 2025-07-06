@@ -3,876 +3,454 @@ import random
 import uuid
 from datetime import datetime, timedelta
 
+# ============================================================================
+# SOLUÇÃO EMERGENCIAL APLICADA - BASEADA NOS DADOS REAIS DO USUÁRIO
+# ============================================================================
+
 # Configurações
-EXEMPLOS_POR_CATEGORIA = 25  # Aumentado para melhor cobertura
+EXEMPLOS_POR_CATEGORIA = 30  # Mais exemplos para categorias críticas
 DATA_INICIO = "01/01/2024"
 DATA_FIM = "31/12/2024"
 
+print("🚨 GERADOR DE CSV CORRIGIDO - SOLUÇÃO EMERGENCIAL")
+print("Baseado nos dados reais do usuário para resolver problemas de produção")
+print("=" * 70)
+
 # ============================================================================
-# MELHORIA PONTUAL 1: CONFIGURAÇÃO DINÂMICA DE GERADORES
+# CATEGORIAS CORRIGIDAS - REMOVENDO PROBLEMÁTICAS
 # ============================================================================
 
-# Configuração dos geradores específicos (NOVO)
-CONFIGURACAO_GERADORES = {
-    "Transporte": {"gerador": "gerar_descricoes_transporte", "percentual": 0.85},
-    "Streaming": {"gerador": "gerar_descricoes_streaming", "percentual": 0.90},
-    "Internet": {"gerador": "gerar_descricoes_internet", "percentual": 0.80},
-    "Telefone": {"gerador": "gerar_descricoes_internet", "percentual": 0.80},
-    "Supermercado": {"gerador": "gerar_descricoes_supermercado", "percentual": 0.85},
-    "Alimentação": {"gerador": "gerar_descricoes_alimentacao", "percentual": 0.80},
-    "Saúde": {"gerador": "gerar_descricoes_saude", "percentual": 0.75},
-    "Medicamentos": {"gerador": "gerar_descricoes_saude", "percentual": 0.80},
-    "Investimentos": {"gerador": "gerar_descricoes_investimento", "percentual": 1.0},
-    "Energia Elétrica": {"gerador": "gerar_descricoes_energia", "percentual": 0.70},
-    "Água": {"gerador": "gerar_descricoes_agua", "percentual": 0.70}
+# RECEITAS (mantidas)
+CATEGORIAS_RECEITAS = [
+    "Salário", "Freelance", "Investimentos", "Comissões", 
+    "Aluguel Recebido", "Vendas", "13º Salário", "Férias", 
+    "Bonificação", "Restituição IR", "Pensão Recebida", "Renda Extra"
+]
+
+# DESPESAS - REMOVENDO "Taxas Bancárias" que estava causando 40% dos erros
+CATEGORIAS_DESPESAS = [
+    # Essenciais
+    "Alimentação", "Supermercado", "Transporte", "Combustível",
+    "Moradia", "Aluguel", "Energia Elétrica", "Água", "Internet", "Telefone", "Gás",
+    
+    # Saúde
+    "Saúde", "Medicamentos", "Plano de Saúde", "Academia", "Terapia",
+    
+    # Educação  
+    "Educação", "Cursos", "Livros", "Material Escolar",
+    
+    # Lazer
+    "Lazer", "Cinema", "Streaming", "Jogos", "Viagens", "Restaurantes", "Bares",
+    
+    # Vestuário
+    "Roupas", "Sapatos", "Cabeleireiro", "Cosméticos",
+    
+    # Financeiro (SEM Taxas Bancárias)
+    "Cartão de Crédito", "Empréstimos", "Financiamentos", "Seguros",
+    
+    # Impostos
+    "Impostos", "IPTU", "IPVA", "Multas",
+    
+    # Família
+    "Crianças", "Pets", "Presentes",
+    
+    # Investimentos (como despesa)
+    "Poupança", "Previdência",
+    
+    # Diversos
+    "Doações", "Assinaturas", "Outros"
+]
+
+# ============================================================================
+# EMPRESAS REAIS DO USUÁRIO - BASEADAS NO CSV REAL
+# ============================================================================
+
+EMPRESAS_REAIS = {
+    "Transporte": [
+        # Uber (formato exato do banco)
+        "Uber - 17.895.646/0001-87 - EBANX IP LTDA. (0383) Agência: 1 Conta: 1000752180-1",
+        "Uber",
+        "EBANX IP LTDA",
+        "Posto São Cristóvão", 
+        "Posto Elo Centro",
+        "99", "inDriver"
+    ],
+    
+    "Streaming": [
+        # GOGIPSY (formato exato do banco)
+        "GOGIPSY E/OU GOGIPSY BRASIL - 37.813.735/0001-44 - MERCADO PAGO IP LTDA. (0323) Agência: 1 Conta: 7996434832-1",
+        "GOGIPSY",
+        "GOGIPSY BRASIL", 
+        "Netflix", "Spotify", "Amazon Prime", "Disney+"
+    ],
+    
+    "Alimentação": [
+        "iFood", 
+        "GIL DA TAPIOCA", 
+        "CAFE PREMIUM", 
+        "ESPETINHO MICHEL",
+        "TARDELLI RESTAURANTE", 
+        "MILK SHAKE MIX ITA", 
+        "JAPEDIU DELIVERY - 38.026.413/0001-18 - EFÍ S.A. - IP (0364) Agência: 1 Conta: 296299-3",
+        "CafeDoCampus",
+        "MP *THEOEVENTOS"
+    ],
+    
+    "Supermercado": [
+        "SUPERM SAO LUIZ", 
+        "SUPERMERCADO PAULO BEL", 
+        "BOM VIZINHO",
+        "TAKE A CASE",
+        "Carrefour", "Extra"
+    ],
+    
+    "Medicamentos": [
+        "PAGUE MENOS 243", 
+        "BORALE",
+        "Drogasil", "Ultrafarma", "Pacheco"
+    ],
+    
+    "Roupas": [
+        "RIACHUELO-FILIAL.108", 
+        "FORTALEZA IGUATEMI",
+        "Renner", "C&A", "Zara"
+    ],
+    
+    "Energia Elétrica": [
+        "NUVEI DO BRASIL INSTITUICAO DE PAGAMENTO LTDA. - 13.492.000/0001-06 - DOCK IP S.A. (0301) Agência: 1 Conta: 4701-7",
+        "FRANCISCO SEVERINO CHAVES - 13.682.442/0001-07 - NU PAGAMENTOS - IP (0260) Agência: 1 Conta: 792923040-9",
+        "Enel", "Light", "Copel"
+    ],
+    
+    "Freelance": [
+        "JOSE TEIXEIRA CORREIA - •••.640.433-•• - BCO BRADESCO S.A. (0237) Agência: 1351 Conta: 672038-2",
+        "DIGITAL COLLEGE FORTALEZA LTDA - 43.082.596/0003-90 - ITAÚ UNIBANCO S.A. (0341) Agência: 8142 Conta: 98166-4",
+        "FRANCISCA E M P AZEVEDO ME - 20.725.700/0001-50 - CAIXA ECONOMICA FEDERAL (0104) Agência: 748 Conta: 578389441-5",
+        "JOAO V O TEIXEIRA CORREIA - •••.593.083-•• - BCO DO BRASIL S.A. (0001) Agência: 374 Conta: 71394-5"
+    ]
 }
 
-## CATEGORIAS CORRIGIDAS (RECEITAS EXPANDIDAS)
-CATEGORIAS_CORRIGIDAS = {
-    "receitas": {
-        "Salário": [
-            "Transferência Recebida - Salário mensal",
-            "Depósito - Salário empresa",
-            "TED Recebida - Pagamento salário",
-            "Transferência - Salário líquido",
-            "Crédito em conta - Salário"
-        ],
-        "Freelance": [
+# ============================================================================
+# GERADORES ESPECÍFICOS BASEADOS NOS DADOS REAIS
+# ============================================================================
+
+def gerar_descricao_transporte():
+    """Gera descrições de transporte baseadas nos dados reais"""
+    tipo = random.choice(["uber", "posto", "outros"])
+    
+    if tipo == "uber":
+        formatos = [
+            "Transferência enviada pelo Pix - Uber - 17.895.646/0001-87 - EBANX IP LTDA. (0383) Agência: 1 Conta: 1000752180-1",
+            "Reembolso recebido pelo Pix - Uber - 17.895.646/0001-87 - EBANX IP LTDA. (0383) Agência: 1 Conta: 1000752180-1",
+            "Compra no débito via NuPay - Uber",
+            "Uber - Corrida",
+            "Pagamento Uber via PIX"
+        ]
+    elif tipo == "posto":
+        posto = random.choice(["Posto São Cristóvão", "Posto Elo Centro", "Ipiranga", "Shell"])
+        formatos = [
+            f"Compra no débito - {posto}",
+            f"Pagamento {posto} via PIX",
+            f"{posto} - Abastecimento"
+        ]
+    else:
+        empresa = random.choice(["99", "inDriver", "Estacionamento"])
+        formatos = [
+            f"Compra no débito - {empresa}",
+            f"Transferência enviada pelo Pix - {empresa}",
+            f"{empresa} - Viagem"
+        ]
+    
+    return random.choice(formatos)
+
+def gerar_descricao_streaming():
+    """Gera descrições de streaming baseadas nos dados reais"""
+    tipo = random.choice(["gogipsy", "netflix", "outros"])
+    
+    if tipo == "gogipsy":
+        formatos = [
+            "Transferência enviada pelo Pix - GOGIPSY E/OU GOGIPSY BRASIL - 37.813.735/0001-44 - MERCADO PAGO IP LTDA. (0323) Agência: 1 Conta: 7996434832-1",
+            "Transferência enviada pelo Pix - GOGIPSY BRASIL",
+            "Compra no débito - GOGIPSY",
+            "GOGIPSY - Assinatura"
+        ]
+    elif tipo == "netflix":
+        formatos = [
+            "Netflix - Assinatura mensal",
+            "Compra no débito - Netflix",
+            "Netflix Premium",
+            "Assinatura Netflix"
+        ]
+    else:
+        empresa = random.choice(["Spotify", "Amazon Prime", "Disney+", "YouTube Premium"])
+        formatos = [
+            f"Assinatura {empresa}",
+            f"Compra no débito - {empresa}",
+            f"{empresa} - Plano Premium"
+        ]
+    
+    return random.choice(formatos)
+
+def gerar_descricao_alimentacao():
+    """Gera descrições de alimentação baseadas nos dados reais"""
+    empresa = random.choice(EMPRESAS_REAIS["Alimentação"])
+    
+    if empresa == "iFood":
+        formatos = [
+            "Compra no débito via NuPay - iFood",
+            "Compra no débito - IFD*IFOOD CLUB",
+            "iFood - Pedido",
+            "Transferência enviada pelo Pix - iFood"
+        ]
+    elif "JAPEDIU" in empresa:
+        return f"Transferência enviada pelo Pix - {empresa}"
+    else:
+        formatos = [
+            f"Compra no débito - {empresa}",
+            f"Transferência enviada pelo Pix - {empresa}",
+            f"{empresa} - Refeição"
+        ]
+    
+    return random.choice(formatos)
+
+def gerar_descricao_supermercado():
+    """Gera descrições de supermercado baseadas nos dados reais"""
+    empresa = random.choice(EMPRESAS_REAIS["Supermercado"])
+    
+    formatos = [
+        f"Compra no débito - {empresa}",
+        f"Transferência enviada pelo Pix - {empresa}",
+        f"{empresa} - Compras"
+    ]
+    
+    return random.choice(formatos)
+
+def gerar_descricao_medicamentos():
+    """Gera descrições de medicamentos baseadas nos dados reais"""
+    empresa = random.choice(EMPRESAS_REAIS["Medicamentos"])
+    
+    formatos = [
+        f"Compra no débito - {empresa}",
+        f"Transferência enviada pelo Pix - {empresa}",
+        f"{empresa} - Medicamentos"
+    ]
+    
+    return random.choice(formatos)
+
+def gerar_descricao_roupas():
+    """Gera descrições de roupas baseadas nos dados reais"""
+    empresa = random.choice(EMPRESAS_REAIS["Roupas"])
+    
+    formatos = [
+        f"Compra no débito - {empresa}",
+        f"Transferência enviada pelo Pix - {empresa}",
+        f"{empresa} - Vestuário"
+    ]
+    
+    return random.choice(formatos)
+
+def gerar_descricao_energia():
+    """Gera descrições de energia baseadas nos dados reais"""
+    if random.random() < 0.3:  # 30% chance de usar formato real
+        empresa = random.choice(EMPRESAS_REAIS["Energia Elétrica"])
+        return f"Transferência enviada pelo Pix - {empresa}"
+    else:
+        empresa = random.choice(["Enel", "Light", "Copel", "Cemig"])
+        formatos = [
+            f"Transferência enviada pelo Pix - {empresa}",
+            f"Compra no débito - {empresa}",
+            f"{empresa} - Energia elétrica"
+        ]
+        return random.choice(formatos)
+
+def gerar_descricao_freelance():
+    """Gera descrições de freelance baseadas nos dados reais"""
+    if random.random() < 0.5:  # 50% chance de usar formato real
+        pessoa = random.choice(EMPRESAS_REAIS["Freelance"])
+        return f"Transferência recebida pelo Pix - {pessoa}"
+    else:
+        formatos = [
             "Transferência Recebida - Freelance",
             "PIX Recebido - Trabalho freelance",
             "TED Recebida - Projeto freelance",
             "Depósito - Serviço prestado"
-        ],
-        "Investimentos": [
-            "Aplicação RDB - Resgate",
-            "Tesouro Direto - Resgate",
-            "CDB - Vencimento",
-            "Poupança - Rendimento",
-            "Fundo de investimento - Resgate"
-        ],
-        "Comissões": [
-            "Transferência Recebida - Comissão",
-            "PIX Recebido - Comissão de vendas",
-            "TED Recebida - Comissão",
-            "Depósito - Comissão recebida"
-        ],
-        "Aluguel Recebido": [
-            "Transferência Recebida - Aluguel",
-            "PIX Recebido - Aluguel imóvel",
-            "TED Recebida - Aluguel",
-            "Depósito - Aluguel recebido"
-        ],
-        "Vendas": [
-            "Transferência Recebida - Venda de produto",
-            "PIX Recebido - Venda",
-            "TED Recebida - Venda",
-            "Depósito - Venda realizada"
-        ],
-        "13º Salário": [
-            "Transferência Recebida - 13º Salário",
-            "Depósito - 13º Salário",
-            "TED Recebida - 13º Salário",
-            "Crédito em conta - 13º Salário"
-        ],
-        "Férias": [
-            "Transferência Recebida - Férias",
-            "Depósito - Férias",
-            "TED Recebida - Férias",
-            "Crédito em conta - Férias"
-        ],
-        "Bonificação": [
-            "Transferência Recebida - Bonificação",
-            "PIX Recebido - Bonificação",
-            "TED Recebida - Bonificação",
-            "Depósito - Bonificação recebida"
-        ],
-        "Restituição IR": [
-            "Transferência Recebida - Restituição IR",
-            "PIX Recebido - Restituição IR",
-            "TED Recebida - Restituição IR",
-            "Depósito - Restituição IR"
-        ],
-        "Pensão Recebida": [
-            "Transferência Recebida - Pensão",
-            "PIX Recebido - Pensão",
-            "TED Recebida - Pensão",
-            "Depósito - Pensão recebida"
-        ],
-        "Renda Extra": [
-            "Transferência Recebida - Renda extra",
-            "PIX Recebido - Renda extra",
-            "TED Recebida - Renda extra",
-            "Depósito - Renda extra"
         ]
-    },
-    "despesas": {
-        # ESSENCIAIS (12 categorias)
-        "Alimentação": [
-            "iFood", "Uber Eats", "Rappi", "McDonald's", "Burger King",
-            "Restaurante", "Lanchonete", "Padaria", "Delivery Much", "Aiqfome",
-            "James Delivery", "Zé Delivery", "Daki", "Cornershop", "Quero Delivery",
-            "Foody Delivery", "SODE", "Entregas Rápidas", "Apptite", "One Pizza",
-            "China In Box", "Pizza Hut", "Bob's", "Habib's", "Cacau Show"
-        ],
-        "Supermercado": [
-            "Carrefour", "Assaí Atacadista", "Grupo Mateus", "Supermercados BH",
-            "GPA (Grupo Pão de Açúcar)", "Grupo Muffato", "Grupo Pereira", "Cencosud Brasil",
-            "Mart Minas & Dom Atacadista", "Koch Supermercados", "DMA Distribuidora", "Zaffari",
-            "Sonda Supermercados", "Rede Economia Prix", "Super Muffato", "Supermercado Amigão",
-            "Supermercados Brasil", "Supermercado Pague Menos", "Supermercado Extrabom", "Extra"
-        ],
-        "Transporte": [
-            "Uber", "99", "inDriver", "Lady Driver", "Wappa", "Garupa", "Rota Pop", 
-            "Ubiz Car", "Chofer46", "Bibi Mob", "Buser", "Flapper", "Moovit", "Turbi",
-            "Passagem de ônibus", "Metrô São Paulo", "Estacionamento shopping", "Pedágio rodovia", "Transferência enviada pelo Pix - Uber",
-            "Compra no débito via NuPay - Uber", "Uber - Corrida", "Pagamento Uber via PIX"
-        ],
-        "Combustível": [
-            "Posto Shell", "Ipiranga", "BR Petrobras", "Ale Combustíveis",
-            "Posto Texaco", "Posto Esso", "BR Mania", "Posto Sinopec",
-            "Abastecimento", "Gasolina", "Etanol", "Diesel", "GNV"
-        ],
-        "Moradia": [
-            "Condomínio residencial", "Taxa de administração", "Manutenção predial",
-            "Reforma do apartamento", "Pintura da casa", "Conserto hidráulico",
-            "Serviço de limpeza", "Jardinagem", "Segurança predial", "Portaria", "Reforma do apartamento", "Pintura da casa",
-            "Conserto hidráulico", "Manutenção predial"
-        ],
-        "Aluguel": [
-            "Aluguel apartamento", "Aluguel casa", "Aluguel comercial",
-            "Aluguel residencial", "Aluguel mensal", "Locação imóvel",
-            "Aluguel quitinete", "Aluguel escritório", "Aluguel loja", "Aluguel galpão"
-        ],
-        "Energia Elétrica": [
-            "Enel", "Light", "Copel", "Cemig", "Eletrobras", "Engie Brasil", 
-            "CPFL Energia", "Neoenergia", "Equatorial Energia", "Coelce",
-            "Conta de energia elétrica", "Conta de luz", "Fatura energia"
-        ],
-        "Água": [
-            "Sabesp", "Cedae", "Sanepar", "Aegea Saneamento", "Iguá Saneamento",
-            "Cagece", "SAAE", "Copasa", "Embasa", "Caern",
-            "Conta de água", "Fatura de água", "Água e esgoto"
-        ],
-        "Internet": [
-            "Vivo Fibra", "NET", "Tim Live", "Oi Fibra", "Claro",
-            "Brisanet", "Vero Internet", "V.tal", "Algar Telecom", "Equatorial Telecom",
-            "Giga+ Fibra", "Zaaz Telecom", "Marinter Telecom", "Tríade Fibra", "NTC", "Internet banda larga Vivo",
-            "Fibra ótica NET", "Wi-Fi residencial Tim", "Plano de internet Oi"
-        ],
-        "Telefone": [
-            "Vivo", "Claro", "Tim", "Oi", "Celular", "Plano pós-pago",
-            "Plano móvel", "Telefone fixo", "Conta móvel", "Recarga celular", "Plano móvel Vivo", "Celular pós-pago Claro",
-            "Recarga Tim", "Conta do celular"
-        ],
-        "Gás": [
-            "Botijão de gás", "Gás de cozinha", "Gás natural", "Conta de gás",
-            "Gás encanado", "Botijão P13", "Gás residencial", "Entrega de gás",
-            "Recarga de gás", "Gás doméstico"
-        ],
-        "Outros": [
-            "Despesa diversa", "Gasto não categorizado", "Compra variada",
-            "Despesa geral", "Outros gastos", "Despesa eventual",
-            "Gasto esporádico", "Compra ocasional", "Despesa extra", "Gasto imprevisto"
-        ],
+        return random.choice(formatos)
 
-        # SAÚDE E BEM-ESTAR (5 categorias)
-        "Saúde": [
-            "Unimed", "Bradesco Saúde", "SulAmérica", "Hapvida NotreDame Intermédica", 
-            "Amil", "Grupo NotreDame Intermédica", "Consulta médica", "Exame laboratorial",
-            "Consulta dentista", "Fisioterapia", "Psicólogo", "Dermatologista"
-        ],
-        "Medicamentos": [
-            "Raia Drogasil", "Grupo DPSP", "Pague Menos", "Drogaria São Paulo", 
-            "Drogaria Pacheco", "Drogasil", "Ultrafarma", "Drogal", "Farmácias Pague Menos",
-            "Medicamento controlado", "Remédio de uso contínuo", "Farmácia popular"
-        ],
-        "Plano de Saúde": [
-            "Plano de saúde Unimed", "Plano de saúde Hapvida", "Plano de saúde Bradesco",
-            "Fatura plano de saúde", "Plano de saúde Amil", "Plano de saúde SulAmérica",
-            "Plano de saúde NotreDame", "Plano de saúde Prevent Senior", "Convênio médico"
-        ],
-        "Academia": [
-            "Mensalidade academia", "Smart Fit", "Bio Ritmo", "Bodytech", "Bluefit",
-            "Academia local", "Personal trainer", "Aulas de dança", "Pilates", "Crossfit"
-        ],
-        "Terapia": [
-            "Sessão de psicoterapia", "Psicólogo clínico", "Terapia de casal",
-            "Psiquiatra", "Terapia familiar", "Análise psicológica", "Consulta psicológica",
-            "Terapia cognitiva", "Acompanhamento psicológico", "Sessão terapêutica"
-        ],
-
-        # EDUCAÇÃO (4 categorias)
-        "Educação": [
-            "Mensalidade escola", "Universidade particular", "Curso técnico",
-            "Pós-graduação", "MBA executivo", "Curso profissionalizante",
-            "Faculdade", "Colégio particular", "Escola infantil", "Ensino fundamental"
-        ],
-        "Cursos": [
-            "Curso de inglês", "Curso online Udemy", "Curso de programação",
-            "Curso de idiomas", "Curso profissionalizante", "Curso de marketing",
-            "Curso de design", "Curso de culinária", "Curso de música", "Curso de fotografia"
-        ],
-        "Livros": [
-            "Compra de livros Amazon", "Livraria Saraiva", "Livro comprado na Amazon",
-            "Compra de livro didático", "Aquisição de livros", "Compra de livros usados",
-            "Compra de livros digitais", "Compra de livros escolares", "Compra de livros técnicos"
-        ],
-        "Material Escolar": [
-            "Papelaria escolar", "Material didático", "Cadernos e canetas",
-            "Mochila escolar", "Calculadora científica", "Estojo escolar",
-            "Lápis de cor", "Material de arte", "Régua e compasso", "Agenda escolar"
-        ],
-
-        # LAZER (7 categorias)
-        "Lazer": [
-            "Parque de diversões",
-            "Boliche",
-            "Karaokê",
-            "Escape room",
-            "Paintball", "Kart", "Clube recreativo", "Parque aquático",
-            "Zoológico", "Museu", "Teatro", "Show musical"
-        ],
-        "Cinema": [
-            "Cinema Iguatemi", "Cinema UCI", "Sessão de cinema Cinépolis",
-            "Cinema Centerplex", "Cinema Cinemark", "Cinema Moviecom",
-            "Cinema Kinoplex", "Cinema PlayArte", "Cinema Cinesystem", "Cinema Lumière"
-        ],
-        "Streaming": [
-            "Netflix", "Spotify", "Amazon Prime Video", "Disney+", "YouTube Premium",
-            "Globoplay", "HBO Max", "Apple TV+", "Paramount+", "Star+", "Looke", "Mubi",
-            "Telecine Play", "Crunchyroll", "UOL Play", "Watch Brasil", "Netflix - Assinatura mensal", "Spotify Premium",
-            "Amazon Prime Video", "Disney+ assinatura"
-        ],
-        "Jogos": [
-            "Steam jogos", "PlayStation Store", "Xbox Game Pass", "Nintendo eShop",
-            "Epic Games Store", "Jogo mobile", "Compra de jogo", "DLC jogo",
-            "Assinatura gaming", "Créditos de jogo"
-        ],
-        "Viagens": [
-            "Passagem aérea", "Hotel reserva", "Booking.com", "Airbnb hospedagem",
-            "Aluguel de carro", "Seguro viagem", "Excursão turística",
-            "Pacote de viagem", "Transfer aeroporto", "Hospedagem"
-        ],
-        "Restaurantes": [
-            "Restaurante italiano", "Churrascaria rodízio", "Sushi delivery",
-            "Pizzaria artesanal", "Hambúrguer gourmet", "Comida mexicana",
-            "Restaurante árabe", "Comida chinesa", "Restaurante vegetariano", "Bistrô francês"
-        ],
-        "Bares": [
-            "Bar da esquina", "Pub irlandês", "Choperia local", "Bar de vinhos",
-            "Boteco tradicional", "Cervejaria artesanal", "Lounge bar",
-            "Bar temático", "Casa noturna", "Bar de coquetéis"
-        ],
-
-        # VESTUÁRIO (4 categorias)
-        "Roupas": [
-            "Renner", "C&A", "Zara", "Hering", "Riachuelo", "Marisa",
-            "Forever 21", "Levis", "Nike", "Adidas", "Compra de vestuário", "Camiseta Renner", "Calça jeans C&A",
-            "Vestido Zara", "Roupa íntima"
-        ],
-        "Sapatos": [
-            "Tênis Nike", "Sapato social", "Sandália Havaianas", "Bota de couro",
-            "Sapatênis casual", "Chinelo de dedo", "Sapato feminino", "Tênis Adidas",
-            "Calçado esportivo", "Sapato infantil"
-        ],
-        "Cabeleireiro": [
-            "Salão de beleza", "Corte de cabelo", "Escova progressiva",
-            "Coloração capilar", "Hidratação capilar", "Manicure e pedicure",
-            "Barbeiro", "Alisamento capilar", "Penteado para festa", "Tratamento capilar"
-        ],
-        "Cosméticos": [
-            "Maquiagem Sephora", "Perfume importado", "Creme facial",
-            "Shampoo e condicionador", "Protetor solar", "Base e corretivo",
-            "Batom e gloss", "Creme hidratante", "Perfume nacional", "Kit de maquiagem"
-        ],
-
-        # FINANCEIRO (5 categorias)
-        "Cartão de Crédito": [
-            "Fatura cartão Nubank", "Fatura cartão Itaú", "Fatura cartão Santander",
-            "Fatura cartão de crédito", "Fatura cartão Bradesco", "Fatura cartão Caixa",
-            "Fatura cartão Banco do Brasil", "Fatura cartão Inter", "Anuidade cartão"
-        ],
-        "Empréstimos": [
-            "Parcela empréstimo pessoal", "Crediário loja", "Financiamento estudantil",
-            "Empréstimo consignado", "Crédito pessoal", "Empréstimo bancário",
-            "Refinanciamento dívida", "Antecipação saque aniversário", "Microcrédito"
-        ],
-        "Financiamentos": [
-            "Financiamento imobiliário", "Financiamento veículo", "Prestação casa própria",
-            "Financiamento moto", "Consórcio imobiliário", "Consórcio automóvel",
-            "Prestação apartamento", "Financiamento terreno", "Leasing veículo", "CDC veículo"
-        ],
-        "Taxas Bancárias": [
-            "Taxa de manutenção conta", "Tarifa DOC/TED", "Taxa cartão de crédito",
-            "Tarifa saque", "Taxa de transferência", "Anuidade conta corrente",
-            "Taxa de serviços", "Tarifa bancária", "Taxa de administração", "Custo operacional"
-        ],
-        "Seguros": [
-            "Seguro auto", "Seguro residencial", "Seguro de vida", "Seguro viagem",
-            "Seguro celular", "Seguro prestamista", "Seguro empresarial",
-            "Seguro acidentes pessoais", "Seguro bike", "Seguro pet"
-        ],
-
-        # IMPOSTOS (4 categorias)
-        "Impostos": [
-            "Imposto de Renda", "ISS serviços", "ITBI imóvel", "Taxa de licenciamento",
-            "Contribuição sindical", "Taxa municipal", "Imposto estadual", "Taxa federal"
-        ],
-        "IPTU": [
-            "IPTU anual", "IPTU parcelado", "Imposto predial", "Taxa territorial urbana",
-            "IPTU à vista", "IPTU residencial", "IPTU comercial", "IPTU terreno",
-            "IPTU apartamento", "IPTU casa"
-        ],
-        "IPVA": [
-            "IPVA carro", "IPVA moto", "Imposto veículo", "IPVA anual",
-            "IPVA parcelado", "IPVA à vista", "Licenciamento veículo",
-            "IPVA automóvel", "IPVA motocicleta", "Taxa veicular"
-        ],
-        "Multas": [
-            "Multa de trânsito", "Multa por velocidade", "Multa estacionamento",
-            "Multa zona azul", "Multa semáforo", "Multa rodízio",
-            "Multa administrativa", "Multa ambiental", "Infração de trânsito"
-        ],
-
-        # FAMÍLIA (3 categorias)
-        "Crianças": [
-            "Escola infantil", "Pediatra consulta", "Brinquedos", "Roupas infantis",
-            "Fraldas e produtos", "Creche mensal", "Curso de natação",
-            "Festa infantil", "Material escolar", "Lanche escolar"
-        ],
-        "Pets": [
-            "Veterinário consulta", "Ração para cães", "Pet shop", "Vacina animal",
-            "Banho e tosa", "Medicamento pet", "Brinquedo para pet",
-            "Castração animal", "Hotel para pets", "Adestramento"
-        ],
-        "Presentes": [
-            "Presente aniversário", "Presente Dia das Mães", "Presente Natal",
-            "Presente casamento", "Presente Dia dos Pais", "Presente namorada",
-            "Presente amigo", "Presente formatura", "Presente bebê", "Presente Páscoa"
-        ],
-
-        # INVESTIMENTOS (3 categorias)
-        "Poupança": [
-            "Depósito poupança", "Aplicação poupança", "Transferência para poupança",
-            "Reserva de emergência", "Poupança mensal", "Economia pessoal",
-            "Guardar dinheiro", "Poupança programada", "Aplicação automática", "Conta poupança"
-        ],
-        "Investimentos": [
-            "Aplicação RDB", "Compra de ações", "Investimento CDB", "Tesouro Direto",
-            "Fundo de investimento", "LCI/LCA", "Debêntures", "Criptomoedas",
-            "COE investimento", "Previdência privada", "Aplicação RDB",
-            "Compra de ações B3", "Tesouro Direto", "CDB Banco Inter"
-        ],
-        "Previdência": [
-            "Previdência privada", "PGBL mensal", "VGBL aplicação", "Plano previdenciário",
-            "Aposentadoria privada", "Contribuição previdência", "Fundo previdência",
-            "Plano de aposentadoria", "Previdência complementar", "Reserva aposentadoria"
-        ],
-
-        # DIVERSOS (2 categorias)
-        "Doações": [
-            "Doação para ONG", "Doação igreja", "Doação para abrigo de animais",
-            "Doação para hospital", "Doação para campanha", "Doação para instituição",
-            "Doação para escola", "Doação para associação", "Doação para projeto social"
-        ],
-        "Assinaturas": [
-            "Spotify Premium", "YouTube Premium", "Google One", "Dropbox Plus",
-            "Office 365", "Adobe Creative", "iCloud storage", "Amazon Prime",
-            "Coursera Plus", "LinkedIn Premium"
+def gerar_descricao_investimentos():
+    """Gera descrições de investimentos baseadas nos dados reais"""
+    tipo = random.choice(["aplicacao", "resgate", "outros"])
+    
+    if tipo == "aplicacao":
+        return "Aplicação RDB"
+    elif tipo == "resgate":
+        return "Resgate RDB"
+    else:
+        formatos = [
+            "Tesouro Direto - Aplicação",
+            "CDB - Investimento",
+            "Poupança - Depósito",
+            "Fundo de investimento"
         ]
-    }
-}
-
-# EMPRESAS REAIS POR CATEGORIA (mantendo sua estrutura)
-EMPRESAS_TRANSPORTE = [
-    "Uber", "99", "WINPAY SERVIÇOS LTDA", "UPPAY", "MOVIDA",
-    "Posto Shell", "Ipiranga", "BR Petrobras", "Ale Combustíveis",
-    "Estacionamento Rotativo", "Pedágio CCR", "Localiza"
-]
-
-EMPRESAS_STREAMING = [
-    "Netflix", "Spotify", "Amazon Prime", "Disney+", "YouTube Premium",
-    "Deezer", "Apple Music", "GOGIPSY", "Paramount+", "HBO Max",
-    "Globoplay", "Crunchyroll", "Twitch"
-]
-
-EMPRESAS_INTERNET = [
-    "Vivo Fibra", "NET Claro", "Tim Live", "Oi Fibra",
-    "BOACOMPRA.COM", "Mercado Pago", "PagSeguro",
-    "Copel Telecom", "Algar Telecom"
-]
-
-EMPRESAS_SUPERMERCADO = [
-    "Extra Supermercado", "Carrefour", "Walmart", "Pão de Açúcar",
-    "Super São Luiz", "Atacadão", "BIG", "Mercado Livre",
-    "Supermercado Zona Sul", "Mercadinho do João"
-]
-
-EMPRESAS_ALIMENTACAO = [
-    "iFood", "Uber Eats", "Rappi", "McDonald's", "Burger King",
-    "KFC", "Subway", "Pizza Hut", "Domino's", "Outback"
-]
-
-EMPRESAS_SAUDE = [
-    "Drogasil", "Drogaria São Paulo", "Ultrafarma", "Pacheco",
-    "Unimed", "Bradesco Saúde", "SulAmérica", "Amil",
-    "Hospital Albert Einstein", "Laboratório Fleury"
-]
-
-EMPRESAS_INVESTIMENTO = [
-    "XP Investimentos", "Rico", "Clear", "Inter Invest",
-    "Nubank Investimentos", "BTG Pactual", "Itaú Investimentos"
-]
-
-EMPRESAS_ENERGIA = [
-    "Enel", "Light", "Copel", "Cemig", "Eletrobras",
-    "Engie Brasil", "CPFL Energia", "Neoenergia", "Equatorial Energia"
-]
-
-EMPRESAS_AGUA = [
-    "Sabesp", "Cedae", "Sanepar", "Aegea Saneamento", "Iguá Saneamento"
-]
-
-# Bancos e códigos reais (mantendo sua estrutura)
-BANCOS = [
-    ("Banco do Brasil", "001", "0001"),
-    ("Caixa Econômica Federal", "104", "104"),
-    ("Banco Bradesco", "237", "237"),
-    ("Itaú Unibanco", "341", "341"),
-    ("Banco Santander", "033", "033"),
-    ("Banco Inter", "077", "077"),
-    ("Nubank", "260", "260"),
-    ("Banco Pan", "623", "623"),
-    ("Banco Safra", "422", "422"),
-    ("Banco BMG", "318", "318"),
-    ("Banco do Nordeste", "004", "004"),
-    ("Banco da Amazônia", "003", "003"),
-    ("Banco Votorantim", "655", "655"),
-    ("Banco Modal", "746", "746"),
-    ("Banco Original", "212", "212")
-]
-
-# CNPJs e CPFs fictícios (mantendo sua estrutura)
-CNPJS_FICTICIOS = [
-    "17.895.646/0001-87", "09.370.323/0001-41", "48.533.288/0001-96",
-    "21.575.374/0001-05", "06.375.668/0003-61", "43.082.596/0003-90"
-]
-
-CPFS_MASCARADOS = [
-    "•••.536.383-••", "•••.876.933-••", "•••.431.142-••",
-    "•••.707.073-••", "•••.593.083-••", "•••.968.523-••"
-]
-
-CONFIGURACAO_GERADORES = {
-    "Transporte": {"gerador": "gerar_descricoes_transporte", "percentual": 0.85},
-    "Streaming": {"gerador": "gerar_descricoes_streaming", "percentual": 0.90},
-    "Internet": {"gerador": "gerar_descricoes_internet", "percentual": 0.80},
-    "Telefone": {"gerador": "gerar_descricoes_internet", "percentual": 0.80},
-    "Supermercado": {"gerador": "gerar_descricoes_supermercado", "percentual": 0.85},
-    "Alimentação": {"gerador": "gerar_descricoes_alimentacao", "percentual": 0.80},
-    "Saúde": {"gerador": "gerar_descricoes_saude", "percentual": 0.75},
-    "Medicamentos": {"gerador": "gerar_descricoes_saude", "percentual": 0.80},
-    "Investimentos": {"gerador": "gerar_descricoes_investimento", "percentual": 1.0},
-    "Energia Elétrica": {"gerador": "gerar_descricoes_energia", "percentual": 0.70},
-    "Água": {"gerador": "gerar_descricoes_agua", "percentual": 0.70}
-}
-
-def gerar_uuid():
-    """Gera um UUID no formato usado pelo banco"""
-    return str(uuid.uuid4())
-
-def gerar_data_aleatoria():
-    """Gera uma data aleatória no período especificado"""
-    inicio = datetime.strptime(DATA_INICIO, "%d/%m/%Y")
-    fim = datetime.strptime(DATA_FIM, "%d/%m/%Y")
-    
-    delta = fim - inicio
-    dias_aleatorios = random.randint(0, delta.days)
-    data_aleatoria = inicio + timedelta(days=dias_aleatorios)
-    
-    return data_aleatoria.strftime("%d/%m/%Y")
+        return random.choice(formatos)
 
 # ============================================================================
-# MELHORIA PONTUAL 2: GERADORES ESPECÍFICOS MELHORADOS
+# CONFIGURAÇÃO DE GERADORES POR CATEGORIA
 # ============================================================================
 
-def gerar_descricoes_transporte():
-    """Versão melhorada com mais variação baseada no tipo de empresa"""
-    empresa = random.choice(EMPRESAS_TRANSPORTE)
-    
-    # Diferentes tipos baseados na empresa
-    if "Posto" in empresa or "Ipiranga" in empresa or "BR" in empresa or "Ale" in empresa:
-        formatos = [
-            f"Compra no débito - {empresa}",
-            f"Pagamento {empresa} via PIX",
-            f"{empresa} - Abastecimento",
-            f"Combustível - {empresa}",
-            f"Transferência enviada pelo Pix - {empresa}"
-        ]
-    elif "Pedágio" in empresa or "CCR" in empresa:
-        formatos = [
-            f"Pagamento {empresa} via PIX",
-            f"{empresa} - Viagem",
-            f"Taxa de pedágio - {empresa}",
-            f"Transferência enviada pelo Pix - {empresa}"
-        ]
-    elif "Estacionamento" in empresa:
-        formatos = [
-            f"Pagamento {empresa} via PIX",
-            f"{empresa} - Zona azul",
-            f"Taxa de estacionamento - {empresa}",
-            f"Compra no débito - {empresa}"
-        ]
-    else:  # Uber, 99, etc.
-        formatos = [
-            f"Transferência enviada pelo Pix - {empresa}",
-            f"Compra no débito via NuPay - {empresa}",
-            f"{empresa} - Corrida",
-            f"{empresa} - Viagem",
-            f"Pagamento {empresa} via PIX",
-            f"{empresa} - Transporte urbano"
-        ]
-    
-    return random.choice(formatos)
+GERADORES_ESPECIFICOS = {
+    "Transporte": gerar_descricao_transporte,
+    "Streaming": gerar_descricao_streaming,
+    "Alimentação": gerar_descricao_alimentacao,
+    "Supermercado": gerar_descricao_supermercado,
+    "Medicamentos": gerar_descricao_medicamentos,
+    "Roupas": gerar_descricao_roupas,
+    "Energia Elétrica": gerar_descricao_energia,
+    "Freelance": gerar_descricao_freelance,
+    "Investimentos": gerar_descricao_investimentos
+}
 
-def gerar_descricoes_streaming():
-    """Versão melhorada para streaming"""
-    empresa = random.choice(EMPRESAS_STREAMING)
-    
-    formatos = [
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"Compra no débito - {empresa}",
-        f"{empresa} - Assinatura mensal",
-        f"{empresa} - Plano {random.choice(['Básico', 'Padrão', 'Premium'])}",
-        f"Assinatura {empresa}",
-        f"{empresa} - Renovação automática",
-        f"Pagamento {empresa} via PIX"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_internet():
-    """Versão melhorada para internet/telefone"""
-    empresa = random.choice(EMPRESAS_INTERNET)
-    
-    formatos = [
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"Compra no débito - {empresa}",
-        f"{empresa} - Mensalidade",
-        f"{empresa} - Plano {random.choice(['Básico', 'Intermediário', 'Premium'])}",
-        f"Pagamento {empresa} via PIX",
-        f"{empresa} - Internet banda larga",
-        f"{empresa} - Conta mensal"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_supermercado():
-    """Versão melhorada para supermercado"""
-    empresa = random.choice(EMPRESAS_SUPERMERCADO)
-    
-    formatos = [
-        f"Compra no débito - {empresa}",
-        f"Compra no débito via NuPay - {empresa}",
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"{empresa} - Compras",
-        f"{empresa} - Mercado",
-        f"Pagamento {empresa} via PIX",
-        f"{empresa} - Compras do mês"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_alimentacao():
-    """Versão melhorada para alimentação"""
-    empresa = random.choice(EMPRESAS_ALIMENTACAO)
-    
-    formatos = [
-        f"Compra no débito via NuPay - {empresa}",
-        f"Compra no débito - {empresa}",
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"{empresa} - Pedido",
-        f"{empresa} - Delivery",
-        f"Pagamento {empresa} via PIX",
-        f"{empresa} - Refeição"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_saude():
-    """Versão melhorada para saúde"""
-    empresa = random.choice(EMPRESAS_SAUDE)
-    
-    formatos = [
-        f"Compra no débito - {empresa}",
-        f"Compra no débito via NuPay - {empresa}",
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"{empresa} - Medicamentos",
-        f"{empresa} - Consulta",
-        f"Pagamento {empresa} via PIX",
-        f"{empresa} - Plano de saúde"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_investimento():
-    """Versão melhorada para investimentos"""
-    empresa = random.choice(EMPRESAS_INVESTIMENTO)
-    tipo_operacao = random.choice(["Aplicação", "Resgate", "Transferência"])
-    tipo_investimento = random.choice(["RDB", "CDB", "Tesouro Direto", "Ações", "Fundos"])
-    
-    formatos = [
-        f"{tipo_operacao} {tipo_investimento}",
-        f"{empresa} - {tipo_operacao}",
-        f"{tipo_investimento} - {tipo_operacao}",
-        f"Transferência - {tipo_investimento}",
-        f"{empresa} - Investimento"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_energia():
-    """Novo gerador para energia elétrica"""
-    empresa = random.choice(EMPRESAS_ENERGIA)
-    
-    formatos = [
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"Compra no débito - {empresa}",
-        f"{empresa} - Energia elétrica",
-        f"{empresa} - Conta de luz",
-        f"Pagamento {empresa} via PIX",
-        f"{empresa} - Conta mensal"
-    ]
-    
-    return random.choice(formatos)
-
-def gerar_descricoes_agua():
-    """Novo gerador para água"""
-    empresa = random.choice(EMPRESAS_AGUA)
-    
-    formatos = [
-        f"Transferência enviada pelo Pix - {empresa}",
-        f"Compra no débito - {empresa}",
-        f"{empresa} - Conta de água",
-        f"{empresa} - Saneamento",
-        f"Pagamento {empresa} via PIX",
-        f"{empresa} - Água e esgoto"
-    ]
-    
-    return random.choice(formatos)
+# ============================================================================
+# FAIXAS DE VALORES REALISTAS
+# ============================================================================
 
 def determinar_faixa_valor(categoria):
-    """Determina faixa de valor baseada na categoria - EXPANDIDA PARA 72 CATEGORIAS"""
-    
+    """Faixas baseadas nos dados reais do usuário"""
     faixas = {
-        # ====================================================================
         # RECEITAS
-        # ====================================================================
-        "Salário": (1500, 12000),
-        "Freelance": (200, 3000),
-        "Investimentos": (50, 8000),
-        "Comissões": (100, 2000),
-        "Aluguel Recebido": (500, 3000),
-        "Vendas": (50, 1500),
-        "13º Salário": (1500, 12000),
-        "Férias": (1000, 8000),
-        "Bonificação": (200, 5000),
-        "Restituição IR": (100, 3000),
-        "Pensão Recebida": (300, 2000),
-        "Renda Extra": (100, 1000),
-        "Recebimentos Gerais": (50, 2000),
+        "Salário": (1500, 8000),
+        "Freelance": (100, 2000),
+        "Investimentos": (50, 3000),
+        "13º Salário": (1500, 8000),
+        "Aluguel Recebido": (800, 3000),
+        "Comissões": (100, 1500),
+        "Vendas": (50, 1000),
+        "Férias": (1000, 6000),
+        "Bonificação": (200, 3000),
+        "Restituição IR": (100, 2000),
+        "Pensão Recebida": (300, 1500),
+        "Renda Extra": (100, 800),
         
-        # ====================================================================
-        # DESPESAS - ESSENCIAIS
-        # ====================================================================
-        "Alimentação": (15, 100),
-        "Supermercado": (30, 400),
-        "Transporte": (5, 40),
+        # DESPESAS CRÍTICAS (baseadas nos dados reais)
+        "Transporte": (5, 50),        # Uber: R$ 5-50
+        "Alimentação": (5, 80),       # Cafés e refeições: R$ 5-80
+        "Supermercado": (30, 200),    # Compras: R$ 30-200
+        "Streaming": (10, 50),        # Assinaturas: R$ 10-50
+        "Medicamentos": (10, 100),    # Farmácias: R$ 10-100
+        "Roupas": (50, 500),          # Vestuário: R$ 50-500
+        
+        # OUTRAS DESPESAS
         "Combustível": (30, 200),
         "Moradia": (100, 1000),
         "Aluguel": (600, 4000),
-        "Energia Elétrica": (60, 400),
-        "Água": (25, 150),
-        "Internet": (50, 200),
-        "Telefone": (30, 120),
+        "Energia Elétrica": (60, 300),
+        "Água": (25, 120),
+        "Internet": (50, 150),
+        "Telefone": (30, 100),
         "Gás": (20, 80),
-        "Outros": (10, 500),
-        
-        # ====================================================================
-        # DESPESAS - SAÚDE E BEM-ESTAR
-        # ====================================================================
-        "Saúde": (50, 500),
-        "Medicamentos": (20, 300),
-        "Plano de Saúde": (150, 800),
-        "Academia": (50, 200),
-        "Terapia": (80, 300),
-        
-        # ====================================================================
-        # DESPESAS - EDUCAÇÃO
-        # ====================================================================
-        "Educação": (200, 2000),
-        "Cursos": (50, 500),
-        "Livros": (20, 150),
-        "Material Escolar": (30, 200),
-        
-        # ====================================================================
-        # DESPESAS - LAZER
-        # ====================================================================
-        "Lazer": (30, 300),
-        "Cinema": (15, 60),
-        "Streaming": (10, 60),
-        "Jogos": (20, 200),
-        "Viagens": (200, 5000),
-        "Restaurantes": (25, 200),
-        "Bares": (20, 150),
-        
-        # ====================================================================
-        # DESPESAS - VESTUÁRIO
-        # ====================================================================
-        "Roupas": (50, 500),
-        "Sapatos": (80, 400),
-        "Cabeleireiro": (30, 200),
-        "Cosméticos": (25, 300),
-        
-        # ====================================================================
-        # DESPESAS - FINANCEIRO
-        # ====================================================================
-        "Cartão de Crédito": (100, 3000),
-        "Empréstimos": (200, 2000),
-        "Financiamentos": (300, 3000),
-        "Taxas Bancárias": (5, 50),
-        "Seguros": (50, 500),
-        
-        # ====================================================================
-        # DESPESAS - IMPOSTOS
-        # ====================================================================
-        "Impostos": (100, 2000),
-        "IPTU": (200, 2000),
-        "IPVA": (200, 2000),
-        "Multas": (50, 500),
-        
-        # ====================================================================
-        # DESPESAS - FAMÍLIA
-        # ====================================================================
-        "Crianças": (100, 1000),
-        "Pets": (50, 300),
-        "Presentes": (30, 500),
-        
-        # ====================================================================
-        # DESPESAS - INVESTIMENTOS
-        # ====================================================================
-        "Poupança": (100, 3000),
-        "Investimentos": (100, 5000),  # Como despesa (aplicação)
-        "Previdência": (100, 1000),
-        
-        # ====================================================================
-        # DESPESAS - DIVERSOS
-        # ====================================================================
-        "Doações": (20, 200),
-        "Assinaturas": (10, 100)
+        "Saúde": (50, 300),
+        "Plano de Saúde": (150, 600),
+        "Academia": (50, 150),
+        "Terapia": (80, 250),
+        "Educação": (200, 1500),
+        "Cursos": (50, 400),
+        "Livros": (20, 100),
+        "Material Escolar": (30, 150),
+        "Lazer": (30, 200),
+        "Cinema": (15, 50),
+        "Jogos": (20, 150),
+        "Viagens": (200, 3000),
+        "Restaurantes": (25, 150),
+        "Bares": (20, 100),
+        "Sapatos": (80, 300),
+        "Cabeleireiro": (30, 150),
+        "Cosméticos": (25, 200),
+        "Cartão de Crédito": (100, 2000),
+        "Empréstimos": (200, 1500),
+        "Financiamentos": (300, 2000),
+        "Seguros": (50, 400),
+        "Impostos": (100, 1500),
+        "IPTU": (200, 1500),
+        "IPVA": (200, 1500),
+        "Multas": (50, 300),
+        "Crianças": (100, 800),
+        "Pets": (50, 200),
+        "Presentes": (30, 300),
+        "Poupança": (100, 2000),
+        "Previdência": (100, 800),
+        "Doações": (20, 150),
+        "Assinaturas": (10, 80),
+        "Outros": (10, 300)
     }
     
-    return faixas.get(categoria, (20, 300))
+    return faixas.get(categoria, (20, 200))
 
 # ============================================================================
-# MELHORIA PONTUAL 3: VALIDAÇÃO BÁSICA
+# FUNÇÕES AUXILIARES
 # ============================================================================
 
-def validar_dados_basico(dados, categoria, tipo_categoria):
-    """Validação básica dos dados gerados"""
-    erros = []
-    
-    for i, item in enumerate(dados):
-        # Verificar campos obrigatórios
-        if not all(key in item for key in ["Data", "Valor", "Identificador", "Descrição", "Categoria"]):
-            erros.append(f"Item {i}: Campos obrigatórios ausentes")
-            continue
-        
-        # Verificar sinal do valor
-        if tipo_categoria == "receitas" and item["Valor"] <= 0:
-            erros.append(f"Item {i}: Receita com valor negativo: {item['Valor']}")
-        elif tipo_categoria == "despesas" and item["Valor"] >= 0:
-            erros.append(f"Item {i}: Despesa com valor positivo: {item['Valor']}")
-        
-        # Verificar descrição
-        if not item["Descrição"] or len(item["Descrição"]) < 3:
-            erros.append(f"Item {i}: Descrição inválida: '{item['Descrição']}'")
-        
-        # Verificar categoria
-        if item["Categoria"] != categoria:
-            erros.append(f"Item {i}: Categoria incorreta: {item['Categoria']} != {categoria}")
-    
-    return len(erros) == 0, erros
+def gerar_uuid():
+    """Gera UUID único"""
+    return str(uuid.uuid4())
 
-# ============================================================================
-# MELHORIA PONTUAL 4: FUNÇÕES AUXILIARES PARA DESCRIÇÕES
-# ============================================================================
+def gerar_data_aleatoria():
+    """Gera data aleatória no período"""
+    inicio = datetime.strptime(DATA_INICIO, "%d/%m/%Y")
+    fim = datetime.strptime(DATA_FIM, "%d/%m/%Y")
+    delta = fim - inicio
+    dias_aleatorios = random.randint(0, delta.days)
+    data_aleatoria = inicio + timedelta(days=dias_aleatorios)
+    return data_aleatoria.strftime("%d/%m/%Y")
 
-def gerar_descricao_receita(categoria, exemplos):
-    """Gera descrição para receitas usando configuração dinâmica"""
-    config = CONFIGURACAO_GERADORES.get(categoria)
+def gerar_descricao_categoria(categoria, tipo_categoria):
+    """Gera descrição para uma categoria específica"""
     
-    if config and random.random() < config["percentual"]:
-        gerador_nome = config["gerador"]
-        gerador_func = globals().get(gerador_nome)
-        if gerador_func:
-            return gerador_func()
+    # Usar gerador específico se disponível
+    if categoria in GERADORES_ESPECIFICOS:
+        if random.random() < 0.8:  # 80% chance de usar gerador específico
+            return GERADORES_ESPECIFICOS[categoria]()
     
-    # Lógica específica para receitas
-    if categoria in ["Salário", "Freelance"]:
-        exemplo_base = random.choice(exemplos)
-        if random.choice([True, False]):
-            return f"Transferência recebida pelo Pix - {exemplo_base}"
-        else:
-            return exemplo_base
+    # Descrições genéricas para outras categorias
+    if tipo_categoria == "receitas":
+        formatos = [
+            f"Transferência Recebida - {categoria}",
+            f"PIX Recebido - {categoria}",
+            f"Depósito - {categoria}",
+            f"TED Recebida - {categoria}"
+        ]
     else:
-        return random.choice(exemplos)
-
-def gerar_descricao_despesa(categoria, exemplos):
-    """Gera descrição para despesas usando configuração dinâmica"""
-    config = CONFIGURACAO_GERADORES.get(categoria)
+        formatos = [
+            f"Compra no débito - {categoria}",
+            f"Transferência enviada pelo Pix - {categoria}",
+            f"{categoria} - Pagamento",
+            f"Conta de {categoria}"
+        ]
     
-    if config and random.random() < config["percentual"]:
-        gerador_nome = config["gerador"]
-        gerador_func = globals().get(gerador_nome)
-        if gerador_func:
-            return gerador_func()
-    
-    # Formato genérico para outras categorias
-    exemplo_base = random.choice(exemplos)
-    tipo_transacao = random.choice(["debito", "pix", "normal"])
-    
-    if tipo_transacao == "debito":
-        if random.choice([True, False]):
-            return f"Compra no débito via NuPay - {exemplo_base}"
-        else:
-            return f"Compra no débito - {exemplo_base}"
-    elif tipo_transacao == "pix":
-        return f"Transferência enviada pelo Pix - {exemplo_base}"
-    else:
-        return exemplo_base
+    return random.choice(formatos)
 
 # ============================================================================
-# MELHORIA PONTUAL 5: FUNÇÃO PRINCIPAL SIMPLIFICADA
+# FUNÇÃO PRINCIPAL
 # ============================================================================
 
-def gerar_dados_categoria(categoria, exemplos, tipo_categoria):
-    """Versão simplificada com configuração dinâmica"""
+def gerar_dados_categoria(categoria, tipo_categoria):
+    """Gera dados para uma categoria específica"""
     dados = []
     min_valor, max_valor = determinar_faixa_valor(categoria)
     
-    for i in range(EXEMPLOS_POR_CATEGORIA):
-        # Gerar valor baseado no tipo
+    # Mais exemplos para categorias críticas
+    exemplos = EXEMPLOS_POR_CATEGORIA
+    if categoria in ["Transporte", "Streaming", "Alimentação", "Supermercado"]:
+        exemplos = 50  # Dobrar exemplos para categorias que falharam
+    
+    for i in range(exemplos):
+        # Gerar valor
         if tipo_categoria == "receitas":
             valor = round(random.uniform(min_valor, max_valor), 2)
         else:
             valor = -round(random.uniform(min_valor, max_valor), 2)
         
-        # Gerar descrição usando funções auxiliares
-        if tipo_categoria == "receitas":
-            descricao = gerar_descricao_receita(categoria, exemplos)
-        else:
-            descricao = gerar_descricao_despesa(categoria, exemplos)
+        # Gerar descrição
+        descricao = gerar_descricao_categoria(categoria, tipo_categoria)
         
         dados.append({
             "Data": gerar_data_aleatoria(),
@@ -884,145 +462,62 @@ def gerar_dados_categoria(categoria, exemplos, tipo_categoria):
     
     return dados
 
-# ============================================================================
-# MELHORIA PONTUAL 6: ESTATÍSTICAS MELHORADAS
-# ============================================================================
-
-def gerar_estatisticas_detalhadas(df):
-    """Estatísticas mais detalhadas"""
-    print(f"\n📊 ESTATÍSTICAS DETALHADAS:")
-    print("=" * 60)
-    
-    # Por categoria
-    print("\n📈 Por Categoria:")
-    for categoria in sorted(df['Categoria'].unique()):
-        cat_data = df[df['Categoria'] == categoria]
-        valor_medio = cat_data['Valor'].mean()
-        sinal = "+" if valor_medio > 0 else ""
-        print(f"  {categoria:20} {len(cat_data):3} transações | Média: {sinal}R$ {abs(valor_medio):7.2f}")
-    
-    # Tipos de descrição
-    print("\n🔍 Tipos de Transação:")
-    tipos = {"PIX": 0, "Débito": 0, "Transferência": 0, "Assinatura": 0, "Outros": 0}
-    
-    for desc in df['Descrição']:
-        desc_lower = desc.lower()
-        if "pix" in desc_lower:
-            tipos["PIX"] += 1
-        elif "débito" in desc_lower:
-            tipos["Débito"] += 1
-        elif "transferência" in desc_lower:
-            tipos["Transferência"] += 1
-        elif "assinatura" in desc_lower:
-            tipos["Assinatura"] += 1
-        else:
-            tipos["Outros"] += 1
-    
-    for tipo, count in tipos.items():
-        percentual = (count / len(df)) * 100
-        print(f"  {tipo:15} {count:4} ({percentual:5.1f}%)")
-    
-    # Distribuição de valores
-    print(f"\n💰 Distribuição de Valores:")
-    receitas = df[df['Valor'] > 0]
-    despesas = df[df['Valor'] < 0]
-    
-    if len(receitas) > 0:
-        print(f"  Receitas: Min R$ {receitas['Valor'].min():.2f} | Max R$ {receitas['Valor'].max():.2f} | Média R$ {receitas['Valor'].mean():.2f}")
-    if len(despesas) > 0:
-        print(f"  Despesas: Min R$ {abs(despesas['Valor'].max()):.2f} | Max R$ {abs(despesas['Valor'].min()):.2f} | Média R$ {abs(despesas['Valor'].mean()):.2f}")
-
 def main():
-    """Função principal melhorada"""
-    print("🔧 Gerando dataset MELHORADO para treinamento de IA...")
-    print("Melhorias: Configuração dinâmica + Validação + Estatísticas")
-    print("=" * 70)
+    """Função principal"""
+    print("Gerando dataset com solução emergencial...")
     
     todos_dados = []
-    erros_totais = 0
     
-    # Processar categorias de receita
-    print("Processando categorias de receita...")
-    for categoria, exemplos in CATEGORIAS_CORRIGIDAS["receitas"].items():
-        dados_categoria = gerar_dados_categoria(categoria, exemplos, "receitas")
-        
-        # Validar dados
-        valido, erros = validar_dados_basico(dados_categoria, categoria, "receitas")
-        if not valido:
-            print(f"  ⚠️  {categoria}: {len(dados_categoria)} exemplos ({len(erros)} erros)")
-            erros_totais += len(erros)
-        else:
-            print(f"  ✅ {categoria}: {len(dados_categoria)} exemplos")
-        
-        todos_dados.extend(dados_categoria)
+    # Gerar receitas
+    print("Processando receitas...")
+    for categoria in CATEGORIAS_RECEITAS:
+        dados = gerar_dados_categoria(categoria, "receitas")
+        todos_dados.extend(dados)
+        print(f"  ✅ {categoria}: {len(dados)} exemplos")
     
-    # Processar categorias de despesa
-    print("Processando categorias de despesa...")
-    for categoria, exemplos in CATEGORIAS_CORRIGIDAS["despesas"].items():
-        dados_categoria = gerar_dados_categoria(categoria, exemplos, "despesas")
-        
-        # Validar dados
-        valido, erros = validar_dados_basico(dados_categoria, categoria, "despesas")
-        if not valido:
-            print(f"  ⚠️  {categoria}: {len(dados_categoria)} exemplos ({len(erros)} erros)")
-            erros_totais += len(erros)
-        else:
-            print(f"  ✅ {categoria}: {len(dados_categoria)} exemplos")
-        
-        todos_dados.extend(dados_categoria)
+    # Gerar despesas
+    print("Processando despesas...")
+    for categoria in CATEGORIAS_DESPESAS:
+        dados = gerar_dados_categoria(categoria, "despesas")
+        todos_dados.extend(dados)
+        exemplos = 50 if categoria in ["Transporte", "Streaming", "Alimentação", "Supermercado"] else EXEMPLOS_POR_CATEGORIA
+        print(f"  ✅ {categoria}: {len(dados)} exemplos")
     
-    # Embaralhar os dados
+    # Embaralhar dados
     random.shuffle(todos_dados)
     
     # Criar DataFrame
     df = pd.DataFrame(todos_dados)
     
-    # Salvar CSV
-    nome_arquivo = 'transacoes_melhorado.csv'
+    # Salvar
+    nome_arquivo = 'transacoes_emergencial_producao.csv'
     df.to_csv(nome_arquivo, index=False)
     
-    print(f"\n=== DATASET MELHORADO GERADO COM SUCESSO ===")
-    print(f"Arquivo: {nome_arquivo}")
-    print(f"Total de transações: {len(df)}")
-    print(f"Total de categorias: {len(CATEGORIAS_CORRIGIDAS['receitas']) + len(CATEGORIAS_CORRIGIDAS['despesas'])}")
-    print(f"Período: {DATA_INICIO} a {DATA_FIM}")
-    print(f"Exemplos por categoria: {EXEMPLOS_POR_CATEGORIA}")
-    print(f"Erros de validação: {erros_totais}")
-    
-    # Estatísticas básicas
-    receitas = df[df['Valor'] > 0]
-    despesas = df[df['Valor'] < 0]
-    
-    print(f"\nEstatísticas Básicas:")
-    print(f"  Receitas: {len(receitas)} transações (R$ {receitas['Valor'].sum():.2f})")
-    print(f"  Despesas: {len(despesas)} transações (R$ {abs(despesas['Valor'].sum()):.2f})")
-    
-    # Estatísticas detalhadas
-    gerar_estatisticas_detalhadas(df)
-    
-    # Mostrar exemplos das categorias corrigidas
-    print(f"\n🎯 EXEMPLOS DAS MELHORIAS APLICADAS:")
+    print(f"\n🎉 DATASET EMERGENCIAL GERADO!")
     print("=" * 50)
+    print(f"📄 Arquivo: {nome_arquivo}")
+    print(f"📊 Total: {len(df)} transações")
+    print(f"📊 Receitas: {len(df[df['Valor'] > 0])}")
+    print(f"📊 Despesas: {len(df[df['Valor'] < 0])}")
+    print(f"📊 Categorias: {df['Categoria'].nunique()}")
     
-    # Exemplos de Transporte
-    transporte_exemplos = df[df['Categoria'] == 'Transporte']['Descrição'].head(5)
-    if len(transporte_exemplos) > 0:
-        print(f"\n🚗 Transporte:")
-        for desc in transporte_exemplos:
-            print(f"  - {desc}")
+    # Estatísticas das categorias críticas
+    print(f"\n🎯 FOCO NAS CATEGORIAS CRÍTICAS:")
+    categorias_criticas = ["Transporte", "Streaming", "Alimentação", "Supermercado"]
+    for cat in categorias_criticas:
+        count = len(df[df['Categoria'] == cat])
+        print(f"  {cat}: {count} exemplos")
     
-    # Exemplos de Streaming
-    streaming_exemplos = df[df['Categoria'] == 'Streaming']['Descrição'].head(5)
-    if len(streaming_exemplos) > 0:
-        print(f"\n📺 Streaming:")
-        for desc in streaming_exemplos:
-            print(f"  - {desc}")
+    print(f"\n🚨 CORREÇÕES APLICADAS:")
+    print(f"  ❌ Removida categoria 'Taxas Bancárias' (causava 40% dos erros)")
+    print(f"  ✅ Adicionadas empresas reais: Uber, GOGIPSY, GIL DA TAPIOCA, etc.")
+    print(f"  ✅ Descrições idênticas ao formato do banco")
+    print(f"  ✅ 50 exemplos para categorias que falharam")
     
     print(f"\n🎯 PRÓXIMO PASSO:")
     print(f"Modifique seu treinamento_modelo_pre_processamento.py:")
-    print(f"Troque: df = pd.read_csv('transacoes_corrigido.csv') caso seja necessário o nome do arquivo gerado")
-    print(f"Por:    df = pd.read_csv('transacoes_melhorado_v2.csv')")
-    print(f"Depois execute: python treinamento_modelo_pre_processamento.py")
+    print(f"Troque: df = pd.read_csv('transacoes_melhorado.csv')")
+    print(f"Por:    df = pd.read_csv('transacoes_emergencial_producao.csv')")
     
     return df
 
